@@ -21,6 +21,9 @@ function connect() {
         stompClient.subscribe('/topic/greetings/9', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
+        stompClient.subscribe('/topic/users/9', function (users) {
+            showGreeting(JSON.parse(users.body).content);
+        });
     });
 }
 
@@ -35,6 +38,7 @@ function disconnect() {
 function sendName() {
     stompClient.send("/app/test/10", {}, JSON.stringify({'name': $("#name").val()}));
 }
+
 
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");

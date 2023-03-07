@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import ru.veselov.websocketroom.model.MessageModel;
 import ru.veselov.websocketroom.model.SendMessage;
+import ru.veselov.websocketroom.model.UserList;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
 @Slf4j
 public class MessageController {
+
 
 
     @MessageMapping("/test/{id}")//это ссылка чата на фронте, куда будет слаться сообщение с бэка
@@ -22,5 +26,14 @@ public class MessageController {
     public SendMessage sendMessage(@DestinationVariable("id") String id, MessageModel model){
         log.info("Получено сообщение {}", model);
         return new SendMessage("Чат № "+id+"привет"+model.getName());
+    }
+
+    @MessageMapping("/test/{id}")//это ссылка чата на фронте, куда будет слаться сообщение с бэка
+    @SendTo("/topic/users/9")//это топик в который шлются сообщения
+    /*
+     * https://stackoverflow.com/questions/27047310/path-variables-in-spring-websockets-sendto-mapping*/
+    public UserList sendUserList(@DestinationVariable("id") String id, MessageModel model){
+        log.info("Получено сообщение {}", model);
+        return new UserList(List.of("User1"));
     }
 }
